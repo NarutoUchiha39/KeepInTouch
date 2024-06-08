@@ -1,0 +1,63 @@
+.register{
+
+    width: 50%;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow:0 4px 8px 0 rgba(0,0,0,0.2);
+
+}
+
+input{
+
+    height: 1.5rem;
+    font-size: 15px;
+}
+
+.anchor{
+
+    width: 90%;
+    height: 60vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+.element{
+
+    margin-bottom: 10px;
+}
+
+.input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.submit{
+    width: 60%;
+    font-size: 15px;
+    padding: 0.5rem;
+    
+}
+.submit button
+{
+    background-color: #04AA6D;
+    border-radius: 0.5rem;
+    color: white;
+}
+.file{
+
+    position: relative;
+    top:80px;
+    width: 100%;
+    margin-left:20%
+    
+}
+.container{
+    width: 100%;
+    height:calc(100vh - 50px);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

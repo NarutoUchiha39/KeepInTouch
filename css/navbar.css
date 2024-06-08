@@ -1,0 +1,32 @@
+body{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.NavBar
+{
+    height:70px;
+    display:flex;
+    justify-content:space-between;
+    box-shadow:0 4px 8px 0 rgba(0,0,0,0.2);
+    align-items: center;
+
+}
+
+.Logo
+{
+    margin-left: 20px;
+}
+
+.Login_Logout
+{
+    margin-right: 20px;
+    display: flex;
+    width: 10%;
+    justify-content: space-between;
+}
