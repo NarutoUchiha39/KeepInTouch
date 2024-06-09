@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password_user = $_POST['password'];
 
         $conn = connect();
-        $res = pg_query($conn, "SELECT username,password,email FROM custom_user WHERE custom_user.email='$email'");
+        $res = pg_query($conn, "SELECT username,password,email,profile_link FROM custom_user WHERE custom_user.email='$email'");
         if (!$res) {
             echo "Query failed: " . pg_last_error($conn);
             exit;
@@ -27,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }else{
             $user_name = $row['username'];
             $email = $row['email'];
+            $url = $row['profile_link'];
             $key = UnsafeCrypto::getEnv('key');
             $password = $row['password'];
             $key = hex2bin($key);
@@ -38,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["username"] = $user_name;
                 $_SESSION['email'] = $email;
                 $_SESSION["success"][] = "Logged in successfully";
+                $_SESSION["url"] = $url ;
                 header("Location: "."/");
                 die();
             }else{

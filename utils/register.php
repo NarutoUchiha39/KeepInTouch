@@ -43,34 +43,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             header("Location: "."/pages/register-page.php");
                             die();
                         }else{
-                            $conn = connect();
+                            
 
-                            $stmt = pg_prepare($conn, "insert_user", "INSERT INTO custom_user(username, password, email, resume_link) VALUES ($1, $2, $3, $4)");
+                            
 
-                            if ($stmt) {
-                                $result = pg_execute($conn, "insert_user", array($name, $encrypted_password, $email, $resume_link));
+                               
 
-                                if($result){
-
-                                    $_SESSION["success"][] = "Registered Successfully";
-                                    $_SESSION['username'] = $name;
-                                    $_SESSION['email'] = $email;
                                     $res = upload_image($fileTempLocation,$name,$fileActualExt);
-                                    pg_free_result($stmt);
-                                    $_SESSION["url"] =  $res["secure_url"];
-                                    header("Location: "."/");
-                                    die();
 
-                                }else{
-                                    $_SESSION["error"] []= "Username or Email already exists";
-                                    header("Location: "."/pages/register-page.php");
-                                    die();
-                                }
+                                    $conn = connect();
+                                    $stmt = pg_prepare($conn, "insert_user", "INSERT INTO custom_user(username, password, email, resume_link,profile_link) VALUES ($1, $2, $3, $4, $5)");
 
-                            }else{
+                                    $result = pg_execute($conn, "insert_user", array($name, $encrypted_password, $email, $resume_link,$res["secure_url"]));
+
+                                    if($result){
+                                    
+                                        $_SESSION["success"][] = "Registered Successfully";
+                                        $_SESSION['username'] = $name;
+                                        $_SESSION['email'] = $email;
+                                        $_SESSION["url"] =  $res["secure_url"];
+                                        
+                                        pg_free_result($stmt);
+                                        header("Location: "."/");
+                                        die();
+
+                                    }else{
+                                        $_SESSION["error"] []= "Username or Email already exists";
+                                        header("Location: "."/pages/register-page.php");
+                                        die();
+                                    }
                                 
-                                echo ":(";
-                            }
                         }
 
                     }else{
