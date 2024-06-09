@@ -27,6 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
             if($errors != 0){
                 $_SESSION["error"][] = "There were some errors uploading files";
+                header("Location: /pages/register-page.php");
+                die();
             }else{
                 if($fileSize === 0 ){
                     
@@ -44,11 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             die();
                         }else{
                             
-
-                            
-
-                               
-
                                     $res = upload_image($fileTempLocation,$name,$fileActualExt);
 
                                     $conn = connect();
