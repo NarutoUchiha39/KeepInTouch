@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if(in_array($fileActualExt,$allowed_types)){
                         
                         if($fileSize > 5000000){
-                            $_SESSION["error"][] = "File less than {$fileSize} MB is allowed";
+                            $_SESSION["error"][] = "File less than 50MB is allowed";
                             header("Location: "."/pages/register-page.php");
                             die();
                         }else{
@@ -82,7 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 $_SESSION["temp"]["password"] = $encrypted_password;
                                                 $_SESSION["temp"]["fileName"] = $fileName;
                                                 $_SESSION["temp"]["tempLocation"] = $_SERVER["DOCUMENT_ROOT"] ."/uploads/$email.$fileActualExt";
-                                                $_SESSION["temp"]["fileType"] = $fileType;
                                                 $_SESSION["temp"]["fileActualExt"] = $fileActualExt;
                                                 send_mail($email,$unique);
                                                 header("Location: /pages/email-verification.php");
