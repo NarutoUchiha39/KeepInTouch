@@ -76,9 +76,11 @@ github link: ```https://github.com/vlucas/phpdotenv```
       location ~ /\.(?!well-known).* {
           deny all;
       }
-  }
+     }
+     
+      ```
 
-  ```
+  
   8. Run ```sudo ngnix -t``` to test your nginx configuration and then run  ```nginx -s relaod``` to restart nginx server
 
 ### *Utility fuctions included:* 
@@ -108,5 +110,25 @@ The register page is used to upload the profile photo along with user credtials 
 
 ### *Logout:*
 Makes use of ```session_unset``` to remove user session variables, ```session_destroy``` to remove the user session files from the server and ```session_regenerate_id(true)```to start a new session
+
+### *Updates:*
+1. Added ```.env.example``` to enable users see how the ```.env``` should contain use ```cp .env.example .env``` to copy the contents of .env.example into .env and fill in your own credentials.  
+2. Added Email verification:
+
+* Used ```php-mailer``` to send mail to people trying to register into the website. For using php-mailer you have to enable 2FA of your google account (If you plan to use gmail smtp) and enable ```App Password```
+
+3. The work-flow is now like this:
+
+* User tries to register
+* using ```pg_prepare``` and ```pg_execute``` the database is queried to check for users with same email and also checks the validity of the file getting uploaded and displays errors accordingly.
+
+*Note: pg_prepare has a small caveat wherein when you execute same prepared statement twice, it gives a warning stating that statement has already been prepared, indicating that prepared statements arent cached by pg_prepare. As far as i know PDO doesnt cause this issue and caches prepared statements. But inspite of warning the statemnt is sexecuted*
+
+* After validating user credentials, we store all the details obtained in ```$_SESSION["temp"]["username"], ...```. This is done because the user is inserted into the database only after their email is verified, so we need some way to access the credentials in ```VerifyMail.php```. We also generate a  unique id as user's code, email and the expiry time(60 seconds) in the DB. The expiry time is stored in the form of unix timestamp using php ```time()``` function. The user is sent a mail containing the code using the custom ```send_mail``` function
+  
+* Next the user is redirected to the email page. Here if the user enters wrong code, appropriate error message is displayed and if the user exceeds the expiry time then the user is redirected back to the register page. On entering the correct code, the user is registered and redirected back to home. Some points to note :
+  1. The temporary location of the file becomes invalid when we move to the other page, so the user's profile photo is temporarily stored in the uploads folder using the ```move_uploaded_file()``` command.
+  2. After the expiry or after the user successfully registers, the ```cleanUp``` function clears the users code from the database and deletes the temporary file in the uploads folder using the ```unlink``` command. After time expiry the temporary session variables are removed and the cleanUp function in run to allow the user to try to register again 
+
 
 ### *If you made it till here, Thank you so much for your valuable time. Hope you enjoyed and learnt something!*
