@@ -122,7 +122,7 @@ Makes use of ```session_unset``` to remove user session variables, ```session_de
 * User tries to register
 * using ```pg_prepare``` and ```pg_execute``` the database is queried to check for users with same email and also checks the validity of the file getting uploaded and displays errors accordingly.
 
-*Note: pg_prepare has a small caveat wherein when you execute same prepared statement twice, it gives a warning stating that statement has already been prepared, indicating that prepared statements arent cached by pg_prepare. As far as i know PDO doesnt cause this issue and caches prepared statements. But inspite of warning the statemnt is sexecuted*
+*Note: pg_prepare has a small caveat wherein when you execute same prepared statement twice, it gives a warning stating that statement has already been prepared, indicating that prepared statements arent cached by pg_prepare. As far as i know PDO doesnt cause this issue and caches prepared statements. But inspite of warning the statemnt is executed*
 
 * After validating user credentials, we store all the details obtained in ```$_SESSION["temp"]["username"], ...```. This is done because the user is inserted into the database only after their email is verified, so we need some way to access the credentials in ```VerifyMail.php```. We also generate a  unique id as user's code, email and the expiry time(60 seconds) in the DB. The expiry time is stored in the form of unix timestamp using php ```time()``` function. The user is sent a mail containing the code using the custom ```send_mail``` function
   
