@@ -58,6 +58,9 @@
                             <div style="font-size:30px;font-weight:bold;position:relative;margin-top:-10px;margin-bottom:50px">
                                 Login
                             </div>
+                            <div style="margin-top:-2rem;margin-bottom:0.7rem" class="forgot_password">
+                                <a style="color:blue" href="<?php echo url("/pages/forgotPassword.php") ?>">Forgot password</a>
+                            </div>
                             <div class="input email">
                                 <label class="element" for="email">Email: </label>
                                 <input required class="element" placeholder="Enter your Email" id="email" name="email" type="email"/>

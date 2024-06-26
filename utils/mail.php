@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 
 //Create an instance; passing `true` enables exceptions
 
-function send_mail($recipient,$verificationCode){
+function send_mail($recipient,$verificationCode,$body){
 
     $mail = new PHPMailer(true);
     $password = $_ENV["mail_password"];
@@ -30,16 +30,21 @@ function send_mail($recipient,$verificationCode){
         //Recipients
         $mail->setFrom($email, 'PHPAuth');
         $mail->addAddress($recipient);     //Add a recipient
-    
+        
+        $description = $body["description"];
+        $link_code = $body["link_code"];
+        $body_mail = $body["body"];
+
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'Email Verification';
         $mail->Body    = "
             
             <h3>Hey There.</h3>
-            <i>Excited for you to hop onboard !</i>
-            Here is your verification code
-            <h3>$verificationCode</h3>
+            <i>$description</i>
+            <br>
+            $body_mail
+            <h3>$link_code</h3>
         ";
 
         $mail->send();
