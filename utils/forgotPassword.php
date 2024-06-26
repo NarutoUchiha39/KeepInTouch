@@ -13,8 +13,7 @@
 
         $link = url("/utils/forgotPassword.php?nonce=$nonce");
         
-        $stmt = pg_prepare($conn,"insert_var_dump($res1);
-            die;nonce","insert into register_user(email,request_at,expiry,code) values($1,$2,$3,$4)");
+        $stmt = pg_prepare($conn,"insert_nonce","insert into register_user(email,request_at,expiry,code) values($1,$2,$3,$4)");
         $cur_time = time();
         $expiry_time = $cur_time + 60;    
 
@@ -55,10 +54,55 @@
         $query = explode("?",$_SERVER["REQUEST_URI"]);
         $key_value = null;
         $request_nonce = null;
-        if(count($query) != 0){
+        if(count($query) != "0"){
             $key_value = explode("=",$query[1]);
             if($key_value[0] == "nonce"){
                 $request_nonce = $key_value[1];
+                $conn = connect();
+                $stmt = pg_prepare($conn,"nonce","SELECT email,expiry FROM register_user WHERE code=$1");
+                $res = pg_execute($conn,"nonce",array( $request_nonce ));
+
+                if($res){
+                    $result = pg_fetch_assoc($res);
+                    $email = null;
+                    $time_now = time();
+                    $expiry = null;
+
+                    if( $result ){
+                        
+                        $email = $result["email"];
+                        $expiry = $result["expiry"];
+                        
+                        if($expiry < $time_now){
+                            
+                            $stmt2 = pg_prepare($conn,"expired_time","DELETE FROM register_user WHERE email=$1");
+                            $res2 = pg_execute($conn,"expired_time",array($email));
+                            if($res2){
+                                $_SESSION["error"][] = "Time expired try again :(";
+                                header("Location: /pages/login-page.php");
+                                die;
+                            }else{
+                                $_SESSION["error"][] = "Something went wrong";
+                                header("Location: /pages/login-page.php");
+                                die;
+                            }
+                        }else{
+                            $_SESSION["temp"]["email"] = $email;
+                            header("Location: /pages/change-password.php");
+                            die;
+                        }
+
+                    }else{
+                        $_SESSION["error"][] = "Something went wrong";
+                        header("Location: /pages/login-page.php");
+                        die;
+                    }
+                    
+                }else{
+                        $_SESSION["error"][] = "Something went wrong";
+                        header("Location: /pages/login-page.php");
+                        die;
+                }
                 
             }else{
                 header("Location: /pages/pageNotFound.php");
@@ -66,7 +110,7 @@
             }
         }
         
-        $conn = connect();
+        
     }
 
 ?>

@@ -4,13 +4,23 @@
     include ($_SERVER['DOCUMENT_ROOT']."/includes/navbar.php");
 ?>
 
-    <style>
+<style>
         .alert {
+        margin:auto;
         padding: 20px;
         background-color: #f44336;
         color: white;
+        width: 45%;
         
-        margin-bottom: 2%;
+        }
+
+        .success{
+        margin: auto;
+        padding: 20px;
+        background-color: green;
+        color: white;
+        width:45%;
+        
         }
 
         .closebtn {
@@ -36,7 +46,7 @@
 
         foreach($_SESSION["error"] as $error){
             ?>
-            <div class="alert">
+            <div class="alert" style="position:relative;">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
                     <?php
                             echo $error;
@@ -44,8 +54,20 @@
             </div>
      <?php }
         unset($_SESSION["error"]);
-    }
-        
+    }elseif(isset($_SESSION["success"])){
+        foreach($_SESSION["success"] as $success){
+     ?>
+
+        <div class="success" style="position:relative;">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                            <?php
+                                    echo $success;
+                            ?>
+        </div>
+
+     <?php } }
+     unset($_SESSION["success"])
+     
      ?>
             
     

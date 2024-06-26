@@ -83,7 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 $_SESSION["temp"]["fileName"] = $fileName;
                                                 $_SESSION["temp"]["tempLocation"] = $_SERVER["DOCUMENT_ROOT"] ."/uploads/$email.$fileActualExt";
                                                 $_SESSION["temp"]["fileActualExt"] = $fileActualExt;
-                                                send_mail($email,$unique);
+                                                $body = array("description"=>"We are excited to have you on board!","body"=>"Here is your verification code","link_code"=>"$unique");
+                                                send_mail($email,$unique,$body);
                                                 header("Location: /pages/email-verification.php");
                                                 die();
                                             }else{
