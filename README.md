@@ -4,7 +4,7 @@
 
 The Project Includes:
 
-* *A Login, Register page.*
+* *A Login, Register page, Email verfication for new users and option to reset password.*
 * *Error and Success displaying mechanism.*
 * *Displaying profile picture*
 * *Use of Supabase as database for storing users*
@@ -13,7 +13,7 @@ The Project Includes:
   <br><br>
 *Demo of Project*
 
-[Demo](https://github.com/NarutoUchiha39/PhpAuthentication/assets/104666748/24a445bd-43e0-4ffa-92ee-a45b16a3bbda)
+[Screencast from 2024-06-26 23-46-37.webm](https://github.com/NarutoUchiha39/PhpAuthentication/assets/104666748/5355c473-99b7-4141-ae81-b09679fe6624)
 
 
 ### *Dependency manager used:*
@@ -84,7 +84,8 @@ github link: ```https://github.com/vlucas/phpdotenv```
   8. Run ```sudo ngnix -t``` to test your nginx configuration and then run  ```nginx -s relaod``` to restart nginx server
 
 ### *Utility fuctions included:* 
-* ```cloudinaryConnection.php``` manages the connection to the cloudinary server and helps in uploading images. After image is uploaded we get the link to image from this file. One small caveat: while loading environment variable by phpdotenv do not use the ```getenv``` method to retrieve environment variable as its not thread safe. Use ```$_ENV``` instead. To upload the profile image, the temporary location of the image obtained through form, is passed to the fuction along with the name of the file. 
+* ```cloudinaryConnection.php``` manages the connection to the cloudinary server and helps in uploading images. After image is uploaded we get the link to image from this file. One small caveat: while loading environment variable by phpdotenv do not use the ```getenv``` method to retrieve environment variable as its not thread safe. Use ```$_ENV``` instead. To upload the profile image, the temporary location of the image obtained through form, is passed to the fuction along with the name of the file.
+  
 * ```getURI.php``` helps in returning the url of a file located on server. It checks whether the server has https in the ```$_SERVER``` super global variable turned on and concatenates it with ```$_SERVER[HTTP_HOST]```. This makes the function flexible and enable correct url retrieval even in hosted environment. To get the url of a file just pass in the file location from root of the server and your good to go
 * ```passwordEncryption.php``` has two static functions. ```getEnv``` returns the value of environment variable when its given the key. ```encrypt``` is used to encrypt the user password with the use of openssl library. The function makes use of ```aes-256-ctr``` which is a block cypher. For the encryption process, a nonce is generated using the ```openssl_random_pseudo_bytes```. The length is determined using ```openssl_cipher_iv_length``` accoring to the cypher method used. The encryption takes place using a strong key, the nonce and the message. The nonce and the message is then concatenated and ```base64 encoded```. For decrypting, first we decoade the ```base64```. we get the nonce by slicing the string as we know the nonce length. Here the ```mb_substr``` is used for slicing. After that the decoding process takes place using the nonce obtained.<br>
 ***Note: I know obtaining hash of password using ```password_hash``` is safer than encrypting and decrypting password. Openssl was used just to explore the library***
@@ -128,7 +129,11 @@ Makes use of ```session_unset``` to remove user session variables, ```session_de
   
 * Next the user is redirected to the email page. Here if the user enters wrong code, appropriate error message is displayed and if the user exceeds the expiry time then the user is redirected back to the register page. On entering the correct code, the user is registered and redirected back to home. Some points to note :
   1. The temporary location of the file becomes invalid when we move to the other page, so the user's profile photo is temporarily stored in the uploads folder using the ```move_uploaded_file()``` command.
-  2. After the expiry or after the user successfully registers, the ```cleanUp``` function clears the users code from the database and deletes the temporary file in the uploads folder using the ```unlink``` command. After time expiry the temporary session variables are removed and the cleanUp function in run to allow the user to try to register again 
+  2. After the expiry or after the user successfully registers, the ```cleanUp``` function clears the users code from the database and deletes the temporary file in the uploads folder using the ```unlink``` command. After time expiry the temporary session variables are removed and the cleanUp function in run to allow the user to try to register again
+
+* Added ability of the users to reset their passwords. First the user is asked to enter the registered mail. If the user is not registered, an error message is shown otherwise the user is sent a mail containing a link to reset the password. The link expires within a minute. On clicking the link, the user is redirected to a page where, the user can enter new password and login to the system
+* The link contains a ```nonce``` key initialized with a random value generated using the php ```unique(true)``` function. On clicking the link the nonce is extracted using the ```explode``` function. The nonce is queried in the database and the corresponding mail of the user is obtained. Then a simple ```UPDATE``` query is used to update the users password and a ```DELETE``` query is used to delete the user's nonce from the database. The user is redirected to the home page with a success message
+
 
 
 ### *If you made it till here, Thank you so much for your valuable time. Hope you enjoyed and learnt something!*
