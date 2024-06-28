@@ -1,8 +1,12 @@
 body{
     display: flex;
     width: 100%;
+    position: relative;
     flex-direction: column;
     min-height: 100vh;
+    box-sizing: border-box;
+    margin-top: 0px;
+    margin-left: 0px;
 }
 
 .success, .alert {
@@ -26,10 +30,48 @@ body{
     justify-content:flex-start;
     align-items: center;
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .alert{
     background-color:#f44336;
+}
+
+.details
+{
+    display: flex;
+    
+    align-items: center;
+}
+
+.title_bar
+{
+    width: 90%;
+    padding: 2.2rem;
+    background-color: #517da2;
+    margin: auto;
+    margin-top: 0.3rem;
+    border-radius: 0.5rem;
+}
+.footer
+{
+
+    background-color: cadetblue;
+    padding: 1rem;
+    bottom: 0px;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.user{
+    padding: 1rem;
+    background-color:cadetblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: large;
 }
 
 .main_content{
@@ -38,9 +80,6 @@ body{
     background-color: #eaeaea;
 }
 
-.chats{
-    border-right: 1px solid gray;
-}
 
 .closebtn {
 margin-left: 15px;
