@@ -27,7 +27,7 @@
     <nav>
         <div class="NavBar">
             <div class="Logo">
-                    Project Dekho
+                    Keep In Touch
             </div>
             <div class="Login_Logout">
             <?php if(!isset($_SESSION['username'])){ ?>
@@ -35,9 +35,13 @@
             <?php } ?>        
             
             <?php if(isset($_SESSION['username'])){ ?>
-                        <a href="<?php echo url('/pages/logout.php') ?>" style="display:flex;justify-content:center;align-items:center">Logout </a>
-                        <div>
-                            <img src="<?php echo $_SESSION["url"] ?>" style="width:50px;border-radius:50%;height:50px"  />
+             
+                        <div style="display: flex;position:relative;right:4rem">
+                            <a href="<?php echo url('/pages/friend-request.php') ?>" style="display:flex;justify-content:center;align-items:center;">Requests </a>
+
+                            <a href="<?php echo url('/pages/logout.php') ?>" style="display:flex;justify-content:center;align-items:center;margin-left:1rem">Logout </a>
+                            
+                            <img src="<?php echo $_SESSION["url"] ?>" style="width:50px;border-radius:50%;height:50px;margin-left:1rem"  />
                         </div>
             <?php }else{ ?>
                         <a href="<?php echo url('/pages/register-page.php') ?>">Register </a>
