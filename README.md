@@ -44,6 +44,7 @@ github link: ```https://github.com/vlucas/phpdotenv```
 
 ### *Database Schemas:*
 *For database I have made use of postgresql database hosted at supabase. For querying datanbase i have used php-pgsql*
+<br>
 ![image](https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/22501edb-fb01-4843-a811-2faa6de1a5d2)
 
 
