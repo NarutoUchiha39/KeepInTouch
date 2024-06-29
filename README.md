@@ -1,21 +1,32 @@
-### A very basic Authentication Web Application written in PHP
+### Keep In Touch: A Basic chat Applicaton made using php 
+*💭 Bro I want to keep in touch with some of my old friends as well as make new friends could you help me with that?* 🤔
+  <br>
+Oh boy you have in at the right time. I have the just the thing for you. Keep In Touch helps you to well keep in touch with your old friends and make some new ones too
 
-*Aim of the project is to create an easy to understand and basic auth system so that newbies can practise PHP*
+Keep In Touch includes the following features:
 
-The Project Includes:
+1. Basic Authentication system including ability to upload your own avatar
+2. Email verfication for new registering users as well as forgot password feature
+3. Expiry of email verification and password reset links in 60 seconds
+4. Ability to send friend requests to people using their username
+5. Ability to accept or reject friend request as well as view incoming and sent friend request
+6. View your friends and chat with them
 
-* *A Login, Register page, Email verfication for new users and option to reset password.*
-* *Error and Success displaying mechanism.*
-* *Displaying profile picture*
-* *Use of Supabase as database for storing users*
-* *Use of Cloudinary to save profile pictures*
-* *Use of Nginx to serve the project*
-  <br><br>
+*Feeling excited to know more about the website? Lets checkout a small demo video!*
+
 *Demo of Project*
 
 [KeepInTouch.webm](https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/681d98a0-5fe9-4fd6-a0c4-cd561836068a)
 
+### <p align='center'> Made with ❤️ using </p>
 
+<p align='center'>
+    <img with=120px height=120px style="margin-right:30px" src='https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/bb313e1a-8d63-4626-8c4c-87241f0a401b'/>
+    <img with=120px height=120px style="margin-right:30px" src='https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/1dd75dfc-c7be-4aed-8d30-5cceeefa0793'/>
+    <img with=120px height=120px style="margin-right:30px" src='https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/76d209bc-3549-40d9-8732-2c8edca23a62'/>
+
+
+</p>
 
 ### *Dependency manager used:*
 To manage the dependencies in the project ```composer``` is used.To learn how to install composer visit ```https://getcomposer.org/doc/00-intro.md```. For using composer in the current project: 
@@ -29,9 +40,12 @@ To manage the dependencies in the project ```composer``` is used.To learn how to
 * ```vlucas/phpdotenv``` : This is a library that helps you to load contents from a .env file into the project environment.
 github link: ```https://github.com/vlucas/phpdotenv```
 * ```cloudinary/cloudinary_php```: This is the official sdk of cloudinary for php. github link: ```https://github.com/cloudinary/cloudinary_php```
+* ```phpmailer/phpmailer```: A library to help you send mail securely and fast. To use this you need to use Gmail password generated using ```App password```
 
-### *Database table:*
-* ```custom_auth``` is used for storing users in the database. The columns are: `username `, `email`, `password`, `resume`, `profile_link` with `username` and `email` as primary keys
+### *Database Schemas:*
+*For database I have made use of postgresql database hosted at supabase. For querying datanbase i have used php-pgsql*
+![image](https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/22501edb-fb01-4843-a811-2faa6de1a5d2)
+
 
 ### *Nginx configuration(optional beginners can use XAMPP server to serve their project)*
 * For Windows users follow ```https://github.com/NarutoUchiha39/EliteSolutions```
@@ -84,42 +98,20 @@ github link: ```https://github.com/vlucas/phpdotenv```
   
   8. Run ```sudo ngnix -t``` to test your nginx configuration and then run  ```nginx -s relaod``` to restart nginx server
 
-### *Utility fuctions included:* 
+### *Special Utility fuctions included:* 
 * ```cloudinaryConnection.php``` manages the connection to the cloudinary server and helps in uploading images. After image is uploaded we get the link to image from this file. One small caveat: while loading environment variable by phpdotenv do not use the ```getenv``` method to retrieve environment variable as its not thread safe. Use ```$_ENV``` instead. To upload the profile image, the temporary location of the image obtained through form, is passed to the fuction along with the name of the file.
-  
 * ```getURI.php``` helps in returning the url of a file located on server. It checks whether the server has https in the ```$_SERVER``` super global variable turned on and concatenates it with ```$_SERVER[HTTP_HOST]```. This makes the function flexible and enable correct url retrieval even in hosted environment. To get the url of a file just pass in the file location from root of the server and your good to go
 * ```passwordEncryption.php``` has two static functions. ```getEnv``` returns the value of environment variable when its given the key. ```encrypt``` is used to encrypt the user password with the use of openssl library. The function makes use of ```aes-256-ctr``` which is a block cypher. For the encryption process, a nonce is generated using the ```openssl_random_pseudo_bytes```. The length is determined using ```openssl_cipher_iv_length``` accoring to the cypher method used. The encryption takes place using a strong key, the nonce and the message. The nonce and the message is then concatenated and ```base64 encoded```. For decrypting, first we decoade the ```base64```. we get the nonce by slicing the string as we know the nonce length. Here the ```mb_substr``` is used for slicing. After that the decoding process takes place using the nonce obtained.<br>
 ***Note: I know obtaining hash of password using ```password_hash``` is safer than encrypting and decrypting password. Openssl was used just to explore the library***
 * ```DBConnect.php``` is used for connecting to supabase. Since supabase is a postgres database, the function ```pg_connect``` is used to connect to supabase and the connection is returned from the function.  
-* ```login.php``` helps in authenticating the user. The connection is obtained from DBConnect.php. First the user is fetched from database using the email obtained from a form. For SQL queries, first a SQL query is prepared using the ```pg_prepare``` function. Then the select query is executed using the ```pg_execute``` function with array of values to be substituted in the prepared statement.The user is authenticated (password decrypted and compared using method mentioned above) and the user credentials are stored in the ```$_SESSION```. ```session_start()``` is used at the start to enable access to session variables
-* ```register.php``` helps in registering a user. First the profile photo uploaded is verified. The filename,size,type,temporary location is obtained from ```$_FILES```. The file is checked for upload errors, then the ```size === 0``` comparison is made to make sure the file is not empty. After that the upload size is check to make sure its less than 5MB then the templocation, filename is passed to  ```cloudinaryConnection.php``` to upload the file too cloudinary. The name of the file is kept as the username since it is bound to be unique and so there will be no clashing of names in profile photo. After uplaoding photo, a SQL prepared statement is fired to insert the user credentials along with profile photo link into the database. Error statements are sent to the frontend according to any constraint violated. The uset details are stored in ```$_SESSION```. The user is then redirected using the ```header("Location: $url")``` to the home page with a success message
+* Displaying of success and error messages
 
-### *Displaying of success and error messages*
+  * Whenever a user is logged in or registered successfully we give an array of success messages in the session storage using ```$_SESSION["success"][]="Success Message"``` and then redirect the user. Same applies for error messages
+  * The user is redirected using the ```header("Location: $url")``` snippet
+  * On the HTML page we have a for loop that iterates over error messages in the session using ```foreach``` loop and at the end of the loop, we make sure that the error messages are flushed out using the ```unset``` function so that new errors are not mixed with old ones
+  * Make sure to have ```session_start()``` at the start of pages where session variables are used
 
-* Whenever a user is logged in or registered successfully we give an array of success messages in the session storage using ```$_SESSION["success"][]="Success Message"``` and then redirect the user. Same applies for error messages
-* The user is redirected using the ```header("Location: $url")``` snippet
-* On the HTML page we have a for loop that iterates over error messages in the session using ```foreach``` loop and at the end of the loop, we make sure that the error messages are flushed out using the ```unset``` function so that new errors are not mixed with old ones
-* Make sure to have ```session_start()``` at the start of pages where session variables are used
-
-### *Navbar:*
-The Navbar checks the presence of user credentials using the ```isset``` function. If the user credentials are set in the ```$_SESSION``` then the profile photo along with logout is displayed. Else login and register is displayed
-
-### *Login page:*
-The Login page makes use of a simple HTML form to send the user credentials to ```login-page.php```. Success and Error messages are passed back and forth using the mechanism mentioned above.
-
-### *Register page:*
-The register page is used to upload the profile photo along with user credtials to ```register-page.php```
-
-### *Logout:*
-Makes use of ```session_unset``` to remove user session variables, ```session_destroy``` to remove the user session files from the server and ```session_regenerate_id(true)```to start a new session
-
-### *Updates:*
-1. Added ```.env.example``` to enable users see how the ```.env``` should contain use ```cp .env.example .env``` to copy the contents of .env.example into .env and fill in your own credentials.  
-2. Added Email verification:
-
-* Used ```php-mailer``` to send mail to people trying to register into the website. For using php-mailer you have to enable 2FA of your google account (If you plan to use gmail smtp) and enable ```App Password```
-
-3. The work-flow is now like this:
+### How the website works:
 
 * User tries to register
 * using ```pg_prepare``` and ```pg_execute``` the database is queried to check for users with same email and also checks the validity of the file getting uploaded and displays errors accordingly.
@@ -132,8 +124,13 @@ Makes use of ```session_unset``` to remove user session variables, ```session_de
   1. The temporary location of the file becomes invalid when we move to the other page, so the user's profile photo is temporarily stored in the uploads folder using the ```move_uploaded_file()``` command.
   2. After the expiry or after the user successfully registers, the ```cleanUp``` function clears the users code from the database and deletes the temporary file in the uploads folder using the ```unlink``` command. After time expiry the temporary session variables are removed and the cleanUp function in run to allow the user to try to register again
 
-* Added ability of the users to reset their passwords. First the user is asked to enter the registered mail. If the user is not registered, an error message is shown otherwise the user is sent a mail containing a link to reset the password. The link expires within a minute. On clicking the link, the user is redirected to a page where, the user can enter new password and login to the system
+* user can reset their passwords from login page. First the user is asked to enter the registered mail. If the user is not registered, an error message is shown otherwise the user is sent a mail containing a link to reset the password. The link expires within a minute. On clicking the link, the user is redirected to a page where, the user can enter new password and login to the system
 * The link contains a ```nonce``` key initialized with a random value generated using the php ```unique(true)``` function. On clicking the link the nonce is extracted using the ```explode``` function. The nonce is queried in the database and the corresponding mail of the user is obtained. Then a simple ```UPDATE``` query is used to update the users password and a ```DELETE``` query is used to delete the user's nonce from the database. The user is redirected to the home page with a success message
+  
+* After successful login/register the user is redirected to the home page where the user can can add new friends. The username entered by the user is checked to see if the name exists. If the name doesnt exists user is shown an error else a friend request is sent
+* A user has tehe option to accept/reject friend request and can view all the requests from the bell icon in the home page
+* At the home page the user can see all the friends. The records are retrieved from db using and SQL query involving ```union``` and ```join```
+* Finally the user can send and recieve messages. Users messages are to the left and the recieved messages are to the right. For this ```JS fetch API``` is used to asynchronously fetch data and populate it in the apropriate place using the ```DOM Manipulation Techniques``` 
 
 
 
