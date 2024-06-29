@@ -7,6 +7,7 @@ body{
     box-sizing: border-box;
     margin-top: 0px;
     margin-left: 0px;
+    margin-bottom: 0px;
 }
 
 .success, .alert {
@@ -46,11 +47,12 @@ body{
 
 .title_bar
 {
-    width: 90%;
-    padding: 2.2rem;
+    width: 95%;
+    padding: 1rem;
     background-color: #517da2;
     margin: auto;
     margin-top: 0.3rem;
+    color: white;
     border-radius: 0.5rem;
 }
 .footer
@@ -80,6 +82,40 @@ body{
     background-color: #eaeaea;
 }
 
+.display_chats
+{
+    display: flex;
+    flex-direction: column;
+}
+.sendText
+{
+    width: 100%;
+    resize: none;
+}
+.send_text
+{
+    position: relative;
+    display: none;
+    
+}
+
+.success,.alert{
+    display: none;
+}
+.messageBody{
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    border-radius: 1.1rem;
+    display: grid;
+    grid-template-rows: 0.3fr 1fr;
+}
+
+
+.each_message{
+    overflow: scroll;
+}
 
 .closebtn {
 margin-left: 15px;
