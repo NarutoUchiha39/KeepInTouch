@@ -134,7 +134,14 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
                                 <div class="textarea">
                                         <textarea required class="sendText" name="message" id="sendtext"></textarea>
                                 </div>
-                                <div class="send" style="display:flex;justify-content:center;align-items:center">
+                                <div class="send" style="display:flex;justify-content:space-evenly;align-items:center">
+                                        
+                                        <button id="ok" onclick="send_attachment()" style="background-color:cadetblue;border:1px solid cadetblue;border-radius:50%;padding:0.5rem;cursor:pointer">  
+                                        <i style="color:white;font-size:25px" class="fa fa-plus" aria-hidden="true"></i>
+
+                                        <input name="attachment" onchange="checkExtension(event)" style="display:none;" type="file" id="send_attachment"></input>
+                                        </button>
+
                                       <button onclick="sendMessage()" style="background-color:cadetblue;border:1px solid cadetblue;border-radius:50%;padding:0.5rem;cursor:pointer">  
                                         <i style="color:white;font-size:25px" class="fa fa-paper-plane" aria-hidden="true"></i>
                                       </button>
@@ -167,6 +174,28 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
     <script>
         let username = null;
         let cur_user = `<?php echo $_SESSION["username"] ?>`
+        let files = null
+
+        function checkExtension(event){
+                files = event.target.files
+                let filename = files[0].name
+                let extension = files[0].type
+                let element = document.getElementById("ok");
+                let actual_ext = extension.split("/")[1]
+                
+                if(actual_ext == "jpeg" || actual_ext == "png" || actual_ext == "jpg" ){
+                element.innerHTML = `<i style="color:white;font-size:25px" class="fa-solid fa-image" aria-hidden="true"></i>`
+                }else if(actual_ext == "pdf"){
+                        element.innerHTML = `<i style="color:white;font-size:25px" class="fa-solid fa-file-pdf" aria-hidden="true"></i>`
+                }else{
+                        element.innerHTML = `<i style="color:white;font-size:25px" class="fa-solid fa-file" aria-hidden="true"></i>`
+                }
+        }
+
+        function send_attachment(){
+                let element = document.getElementById("send_attachment")
+                element.click()
+        }
 
         function messageHTML(src,name,description,direction,user){
                 let message = null;
@@ -244,13 +273,19 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
         }
         async function sendMessage(message){
 
-                let sendText = document.getElementById("sendtext");
+                let sendText = document.getElementById("sendtext")
+                let formData = new FormData();
+                formData.append("sender",cur_user);
+                formData.append("reciever",username);
+                if(files){
+                        formData.append("attachment",files[0])
+                }
+                formData.append("message",sendText.value);
+                formData.append("option",1);
                 
-        
                 let res = await fetch("http://localhost:8000/utils/sendRetrieveMessage.php",{
                         method:"POST",
-                        headers:{"Content-type":"application/x-www-form-urlencoded"},
-                        body:new URLSearchParams({reciever:username,message:sendText.value,option:1})
+                        body:formData
                 }).then(async(data)=>await data.json()).catch((err)=>{console.log(err)})
 
                 if(res.status=="success"){
@@ -260,7 +295,7 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
                 }else{
                          let element = document.getElementById("alert");
                         element.parentElement.style.display = "flex"
-                        element.innerHTML = "Something went wrong :("
+                        element.innerHTML = res["message"];
                 }
         }
 
@@ -278,7 +313,7 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
                 form.style.margin= "auto";
                 form.style.marginBottom= "10px";
                 form.style.display= "grid";
-                form.style.gridTemplateColumns = "1fr 0.1fr";
+                form.style.gridTemplateColumns = "0.8fr 0.2fr";
 
 
                 let HTML = `
