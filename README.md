@@ -16,9 +16,7 @@ Keep In Touch includes the following features:
 
 *Demo of Project*
 
-
-
-![KeepInTouch](https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/acbb0e9c-8bc8-47f1-9560-a57f5161e32f)
+[KeepInTouch.webm](https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/c5a23d6e-53fa-4dc5-859e-0a71c0b01c85)
 
 
 
