@@ -16,8 +16,9 @@ Keep In Touch includes the following features:
 
 *Demo of Project*
 
-[KeepInTouch.webm](https://github.com/NarutoUchiha39/KeepInTouch/assets/104666748/c5a23d6e-53fa-4dc5-859e-0a71c0b01c85)
-
+<video controls="" width="800" height="500" muted="" loop="" autoplay="">
+<source src="ReadMeAssets/KeepInTouch.mp4" type="video/mp4">
+</video
 
 
 ### <p align='center'> Made with ❤️ using </p>
