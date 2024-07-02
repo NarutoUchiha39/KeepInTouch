@@ -42,9 +42,9 @@
                                     echo json_encode(array("status"=>"error","message"=>"files less than 50MB are allowed"));
                                 }else{
                                     $time = time();
-                                    $fileNameActual = $username."_".$time;
+                                    $fileNameActual = $username."_".$time."_".$file_details[0];
                                     
-                                    $res = upload_image($temp_location,$fileNameActual,$fileActualExt);
+                                    $res = upload_image($temp_location,$fileNameActual,$fileActualExt,"raw");
                                     if($res){
                                         $stmt2 = pg_prepare($conn,"insert_media","INSERT INTO messages(sender,reciever,message,type) 
                                         VALUES($1,$2,$3,$4)");
@@ -69,7 +69,7 @@
 
                         }else{
                             header("application/json");
-                            echo json_encode(array("status"=>"error","message"=>$fileActualExt));
+                            echo json_encode(array("status"=>"error","message"=>"file type not allowed :("));
                         }
                     
                 }

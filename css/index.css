@@ -87,6 +87,19 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+.document
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.documentContent{
+    display:grid;
+    grid-template-rows: 1fr 1fr;
+}
+
 .sendText
 {
     width: 100%;

@@ -3,7 +3,7 @@
     use Cloudinary\Configuration\Configuration;
     use Cloudinary\Api\Upload\UploadApi;
 
-    function upload_image($path,$imageName,$ext){
+    function upload_image($path,$imageName,$ext,$type="image"){
         $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
         $dotenv->load();
 
@@ -19,6 +19,7 @@
         $res =  $upload->upload(
             "{$path}",
             [
+                'resource_type'=> "$type",
                 'public_id' => "{$imageName}",
                 'use_filename' => true,
                 'overwrite' => false

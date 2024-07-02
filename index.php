@@ -197,42 +197,169 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
                 element.click()
         }
 
-        function messageHTML(src,name,description,direction,user){
+        function messageHTML(src,name,description,direction,user,type,img_src,file_name=null){
+                console.log(type)
                 let message = null;
-                if(!user){
-                message = `
-                <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
-                        <div class='user_message' style="width:30%;display:grid;grid-template-columns:0.2fr 0.8fr">
-                                <div class="messageProfile">
-                                        <img style="height:50px;width:50px;border-radius:50%" src="${src}" alt="">
-                                </div>
-                                <div class="messageBody">
-                                        <div style="color:darkgreen" class="sender">
-                                                ${name}
+                if(type == "text"){
+                        if(!user){
+                        message = `
+                        <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
+                                <div class='user_message' style="width:30%;display:grid;grid-template-columns:0.2fr 0.8fr">
+                                        <div class="messageProfile">
+                                                <img style="height:50px;width:50px;border-radius:50%" src="${src}" alt="">
                                         </div>
+                                        <div class="messageBody">
+                                                <div style="color:darkgreen" class="sender">
+                                                        ${name}
+                                                </div>
 
-                                        <div class="messageContents">
-                                                ${description}
+                                                <div class="messageContents">
+                                                        ${description}
+                                                </div>
                                         </div>
                                 </div>
                         </div>
-                </div>
-                `
-                }else{
-                message = `
-                <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
-                                <div class="messageBody">
-                                        <div style="color:darkblue" class="sender">
-                                                ${name}
-                                        </div>
+                        `
+                        }else{
+                        message = `
+                        <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
+                                        <div class="messageBody">
+                                                <div style="color:darkblue" class="sender">
+                                                        ${name}
+                                                </div>
 
-                                        <div class="messageContents">
-                                                ${description}
+                                                <div class="messageContents">
+                                                        ${description}
+                                                </div>
                                         </div>
                                 </div>
                         </div>
-                </div>
-                `       
+                        `       
+                        }
+                }else if(type == "jpeg" || type == "png" || type == "jpg" || type == "webp"){
+
+                        if(!user){
+                        message = `
+                        <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
+                                <div class='user_message' style="width:30%;display:grid;grid-template-columns:0.2fr 0.8fr">
+                                        <div class="messageProfile">
+                                                <img style="height:50px;width:50px;border-radius:50%" src="${src}" alt="">
+                                        </div>
+                                        <div class="messageBody">
+                                                <div style="color:darkgreen" class="sender">
+                                                        ${name}
+                                                </div>
+
+                                                <div class="messageContents">
+                                                        <img style='width:341px;height:192px' src='${img_src}'/>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        `
+                        }else{
+                        message = `
+                        <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
+                                        <div class="messageBody">
+                                                <div style="color:darkblue" class="sender">
+                                                        ${name}
+                                                </div>
+
+                                                <div class="messageContents">
+                                                        <img style='width:341px;height:192px' src='${img_src}'/>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        `       
+                        }
+
+                }else if(type == "pdf"){
+                        if(!user){
+                        message = `
+                        <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
+                                        <div class="messageProfile">
+                                                <img style="height:50px;width:50px;border-radius:50%" src="${src}" alt="">
+                                        </div>
+                                        <div class="messageBody">
+                                        
+                                                <div style="color:darkgreen" class="sender">
+                                                        ${name}
+                                                </div>
+
+                                                <div class="messageContents">
+                                                        
+                                                <div class="messageContents">
+                                                        <div class="document" >
+                                                                <div style='margin-right:1rem'>
+                                                                        <i style='color:cadetblue;font-size:1.4rem' class="fa-solid fa-file"></i>
+                                                                </div>
+
+                                                                <div class="documentContent" style='margin-right:10px'>
+                                                                        <div style='font-size:15px' class='document_name'>
+                                                                                ${file_name}
+                                                                        </div>
+
+                                                                        <div style='margin-top:5px;color:gray;font-size:12px'  class='document_name'>
+                                                                                ${type}
+                                                                        </div>
+                                                                </div>
+
+                                                                <div style='cursor:pointer'">  
+                                                                   <a download href='${description}'>     
+                                                                        <i style='color:cadetblue;font-size:20px' class="fa fa-download" aria-hidden="true"></i>
+                                                                   </a>
+                                                                </div>
+
+
+                                                        </div>
+                                                </div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        `
+                        }else{
+                        message = `
+                        <div class="row" style='width:95%;display:flex;justify-content:${direction}'>
+                                        <div class="messageBody">
+                                                <div style="color:darkblue" class="sender">
+                                                        ${name}
+                                                </div>
+
+                                                <div class="messageContents">
+                                                        
+                                                <div class="messageContents">
+                                                        <div class="document" >
+                                                                <div style='margin-right:1rem'>
+                                                                        <i style='color:cadetblue;font-size:1.4rem' class="fa-solid fa-file"></i>
+                                                                </div>
+
+                                                                <div class="documentContent" style='margin-right:10px'>
+                                                                        <div style='font-size:15px' class='document_name'>
+                                                                                ${file_name}
+                                                                        </div>
+
+                                                                        <div style='margin-top:5px;color:gray;font-size:12px'  class='document_name'>
+                                                                                ${type}
+                                                                        </div>
+                                                                </div>
+
+                                                                <div style='cursor:pointer'">  
+                                                                   <a download href='${description}'>     
+                                                                        <i style='color:cadetblue;font-size:20px' class="fa fa-download" aria-hidden="true"></i>
+                                                                   </a>
+                                                                </div>
+
+
+                                                        </div>
+                                                </div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        `       
+                        }
                 }
 
                 return message
@@ -252,11 +379,26 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
                         let HTML = ``
                         
                        res["messages"].forEach((value,index)=>{
-                                let messageHtml1 = ""
+                                let messageHtml1 = "";
+                                let fileName = "";
+                                if(value["type"] == "pdf"){
+                                        let split_text = value["message"].split("/");
+                                        let temp_list = split_text[split_text.length-1].split("_")
+                                        fileName = temp_list[temp_list.length-1]
+                                }
                                 if(value["sender"] != cur_user){
-                                        messageHTML1 = messageHTML(imageUrl,value["sender"],value["message"],"flex-start",false);
+                                        if(value["type"] == "text"){
+                                                messageHTML1 = messageHTML(imageUrl,value["sender"],value["message"],"flex-start",false,"text","","");
+                                        }else{
+                                                messageHTML1 = messageHTML(imageUrl,value["sender"],value["message"],"flex-start",false,value["type"],value["message"],fileName);
+                                        }
                                 }else{
-                                        messageHTML1 = messageHTML("","You",value["message"],"flex-end",true);
+                                        if(value["type"] == "text"){
+                                                messageHTML1 = messageHTML(imageUrl,"You",value["message"],"flex-end",true,"text","","");
+                                        }else{
+                                                messageHTML1 = messageHTML(imageUrl,"You",value["message"],"flex-end",true,value["type"],value["message"],fileName);
+                                        }
+                                        
                                 }
 
                                 HTML += messageHTML1
@@ -334,6 +476,8 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
                 fetchChats(userName,imageURL);
 
         }
+
+       
 
         function close_modal(){
                 let element = document.getElementById("modal");
