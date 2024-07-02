@@ -40,7 +40,7 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
 
         foreach($_SESSION["success"] as $success){
             ?>
-            <div class="success">
+            <div class="success1">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
                     <?php
                             echo $success;
@@ -57,7 +57,7 @@ include $_SERVER["DOCUMENT_ROOT"] ."/utils/getURI.php"
 
         foreach($_SESSION["error"] as $error){
             ?>
-            <div class="alert">
+            <div class="alert1">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
                     <?php
                             echo $error;

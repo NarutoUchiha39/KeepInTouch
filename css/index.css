@@ -10,7 +10,7 @@ body{
     margin-bottom: 0px;
 }
 
-.success, .alert {
+.success, .alert,.success1,.alert1 {
     padding: 20px;
     background-color:green;
     color: white;
@@ -34,7 +34,7 @@ body{
     cursor: pointer;
 }
 
-.alert{
+.alert,.alert1{
     background-color:#f44336;
 }
 
